@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>稻草FAQ首页</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+  <script src="/bower_components/polyfill/dist/polyfill.min.js"></script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/@popperjs/core/dist/umd/popper.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="bower_components/polyfill/dist/polyfill.min.js"></script>
+  <script src="bower_components/vue/dist/vue.js"></script>
+</head>
+<body>
+<header class="container-fluid mb-3 bg-light">
+
+  <nav class="navbar navbar-expand-lg   navbar-light bg-light">
+    <a class="navbar-brand" href="index.html"> <img alt="稻草问答" src="img/straw_logo_239x80.png" height="33">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link active" href="index.html">首页</a>
+        <a class="nav-item nav-link active" href="personal/myQuestion.html">提问</a>
+        <a class="nav-item nav-link active" href="personal/task.html">任务</a>
+        <a class="nav-item nav-link active" href="personal/collect.html">收藏</a>
+      </div>
+
+    </div>
+
+    <div class="form-inline my-2 my-lg-0" id="searchApp">
+      <input class="form-control form-control-sm mr-sm-2 rounded-pill" type="search" placeholder="Search"
+             aria-label="Search">
+      <button class="btn btn-sm btn-outline-secondary my-2 my-sm-0 rounded-pill" type="button"><i class="fa fa-search"
+                                                                                                  aria-hidden="true"></i>
+      </button>
+    </div>
+    <a type="button" class="btn btn-outline-primary btn-sm mx-2" href="question/create.html">我要提问</a>
+    <div id="noticeCount">
+      <button type="button" class="btn btn-default btn-xs fa fa-bell-o" data-toggle="modal" data-target="#noticeModal">
+        <span class="badge badge-warning badge-pill">2</span>
+      </button>
+    </div>
+    <div class="dropdown   py-1 mr-3 ">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+        <img style="width: 30px;height: 30px;border-radius: 50%;" src="img/user.jpg">
+      </button>
+      <div class="dropdown-menu dropdown-menu-sm-left text-sm border-0" aria-labelledby="dropdownMenu2">
+        <a class="dropdown-item " href="personal/userInfo.html">账号设置</a>
+        <div class="dropdown-divider"></div>
+        <button data-toggle="modal" data-target="#invitecodeModal" class="dropdown-item btn-default">查看邀请码
+        </button>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item " href="login.html">注销登录</a>
+      </div>
+    </div>
+  </nav>
+  <!-- 消息modal-->
+  <div class="modal fade" id="noticeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+          <div id="myTab" role="tablist" class="nav nav-tabs">
+            <a href="#commentNotice" class="nav-item nav-link active text-black" data-toggle="tab"
+               aria-controls="commentNotice" aria-selected="true">
+              通知
+            </a>
+            <a href="#announcement" class="nav-item nav-link text-black" data-toggle="tab" aria-controls="announcement"
+               aria-selected="true">
+              公告
+            </a>
+
+          </div>
+          <div id="myTabContent" class="tab-content col-12">
+            <div class="tab-pane fade show active row" id="commentNotice" role="tabpanel"
+                 aria-labelledby="noAnswer-tab">
+              <div class="list-group list-group-flush">
+                <h6 class="text-dark my-2" style="display: none">暂无新消息！</h6>
+                <a href="notice/all.html" style="display: none" class="text-info">查看历史消息</a>
+                <!--只显示10条消息-->
+                <div class="list-group-item list-group-item-action">
+                  <span>张三</span>
+                  <strong style="display: none">回答了你的问题</strong>
+                  <strong style="display: none">评论了您的回答</strong>
+                  <strong style="display: none">评论了您的提问</strong>
+                  <strong>向您提问</strong>
+                  <a href="" class="text-info">Java中方法重载和重写的区别</a>
+                </div>
+              </div>
+              <div class="col-12 mt-2 ">
+                <a href="notice/all.html" class="text-info">查看全部消息</a>
+              </div>
+            </div>
+            <div class="tab-pane fade row" id="announcement" role="tabpanel" aria-labelledby="unSolve-tab">
+              <p class="text-black mt-2">暂无公告！</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div><!-- 消息modal-->
+  <!-- 查看邀请码modal-->
+  <div class="modal fade" id="invitecodeModal" tabindex="-1" role="dialog" aria-labelledby="invitecodeModal"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <div class="modal-body">
+          <table class="table">
+            <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">班级</th>
+              <th scope="col">邀请码</th>
+              <th scope="col">有效期至</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>JSD1912</td>
+              <td>JSD1912-697441</td>
+              <td>2020-05-18 23:26:05</td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>JSD2001</td>
+              <td>JSD2001-216850</td>
+              <td>2020-05-18 23:26:05</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>JSD2002</td>
+              <td>JSD2002-563302</td>
+              <td>2020-05-18 23:26:05</td>
+            </tr>
+            <tr>
+              <th scope="row">4</th>
+              <td>JSD2003</td>
+              <td>JSD2003-285267</td>
+              <td>2020-05-18 23:26:05</td>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div><!-- 查看邀请码modal-->
+</header>
+
+<!--引入标签的导航栏-->
+<div class="container-fluid" th:fragment="tags_nav">
+  <div class="nav font-weight-light" id="tagsApp">
+    <a href="tag/tag_question.html" class="nav-item nav-link text-info"><small>全部</small></a>
+    <a href="tag/tag_question.html" class="nav-item nav-link text-info"><small>Java基础</small></a>
+  </div>
+</div>
+
+<div class="container-fluid bg-light mt-3 mb-1">
+  <div class="row">
+    <div class="col-md-12 col-lg-8 pb-2">
+      <div class="row">
+        <div class="container-fluid" id="questionsApp">
+          <h4 class="border-bottom m-2 p-2 font-weight-light"><i class="fa fa-comments-o" aria-hidden="true"></i> 我的问答
+          </h4>
+          <div class="row" style="display: none">
+            <div class="alert alert-warning w-100" role="alert">
+              抱歉您还没有提问内容， <a href="question/create.html" class="alert-link">您可以点击此处提问</a>，或者点击标签查看其它问答
+            </div>
+          </div>
+          <div class="media bg-white m-2 p-3">
+            <div class="media-body w-50">
+              <div class="row">
+                <div class="col-md-12 col-lg-2">
+                  <span class="badge badge-pill badge-warning" style="display: none">未回复</span>
+                  <span class="badge badge-pill badge-info" style="display: none">已回复</span>
+                  <span class="badge badge-pill badge-success">已解决</span>
+                </div>
+                <div class="col-md-12 col-lg-10">
+                  <h5 class="mt-0 mb-1 text-truncate">
+                    <a class="text-dark" href="question/detail.html">
+                      eclipse 如何导入项目？
+                    </a>
+                  </h5>
+                </div>
+              </div>
+
+              <div class="font-weight-light text-truncate text-wrap text-justify mb-2" style="height: 70px;">
+                <p>
+                  eclipse 如何导入项目？
+                </p>
+              </div>
+              <div class="row">
+                <div class="col-12 mt-1 text-info">
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                  <a class="text-info badge badge-pill bg-light" href="tag/tag_question.html"><small>Java基础
+                    &nbsp;</small></a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 text-right">
+                  <div class="list-inline mb-1 ">
+                    <small class="list-inline-item">风继续吹</small>
+                    <small class="list-inline-item"><span>12</span>浏览</small>
+                    <small class="list-inline-item">13分钟前</small>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <!-- / class="media-body"-->
+            <img src="img/tags/example0.jpg" class="ml-3 border img-fluid rounded" alt="" width="208" height="116">
+          </div>
+          <div class="row mt-2">
+            <div class="col-6 offset-3">
+              <nav aria-label="Page navigation example">
+                <div class="pagination">
+                  <a class="page-item page-link" href="#">上一页</a>
+                  <a class="page-item page-link " href="#">1</a>
+                  <a class="page-item page-link" href="#">下一页</a>
+                </div>
+              </nav>
+            </div>
+
+          </div>
+        </div>
+
+      </div> <!-- / class="col-8"-->
+    </div>
+    <div class="col-md-12 col-lg-4 pb-2">
+      <!--个人信息-->
+      <div class="container-fluid font-weight-light">
+        <div class="card">
+          <h5 class="card-header">陈某</h5>
+          <div class="card-body">
+            <div class="list-inline mb-1 ">
+              <a class="list-inline-item mx-3 my-1 text-center">
+                <div><strong>10</strong></div>
+                <div>回答</div>
+              </a>
+              <a class="list-inline-item mx-3 my-1 text-center" href="personal/myQuestion.html">
+                <div><strong>10</strong></div>
+                <div>提问</div>
+              </a>
+              <a class="list-inline-item mx-3 my-1 text-center" href="personal/collect.html">
+                <div><strong>10</strong></div>
+                <div>收藏</div>
+              </a>
+              <a class="list-inline-item mx-3 my-1 text-center" href="personal/task.html">
+                <div><strong>10</strong></div>
+                <div>任务</div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--热点数据-->
+      <div class="container-fluid bg-light mt-5">
+        <h4 class="m-2 p-2 font-weight-light"><i class="fa fa-list" aria-hidden="true"></i> 热点问题</h4>
+        <div class="list-group list-group-flush">
+          <a href="question/detail.html" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <small class="mr-2">1条回答</small>
+                <small class="text-warning" style="display: none">未回复</small>
+                <small class="text-info" style="display: none">未解决</small>
+                <small class="text-success">已解决</small>
+              </div>
+              <div class="col-6 text-right">
+                <small>10浏览</small>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="list-group list-group-flush">
+          <a href="question/detail.html" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <small class="mr-2">1条回答</small>
+                <small class="text-warning" style="display: none">未回复</small>
+                <small class="text-info" style="display: none">未解决</small>
+                <small class="text-success">已解决</small>
+              </div>
+              <div class="col-6 text-right">
+                <small>10浏览</small>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="list-group list-group-flush">
+          <a href="question/detail.html" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <small class="mr-2">1条回答</small>
+                <small class="text-warning" style="display: none">未回复</small>
+                <small class="text-info" style="display: none">未解决</small>
+                <small class="text-success">已解决</small>
+              </div>
+              <div class="col-6 text-right">
+                <small>10浏览</small>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="list-group list-group-flush">
+          <a href="question/detail.html" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <small class="mr-2">1条回答</small>
+                <small class="text-warning" style="display: none">未回复</small>
+                <small class="text-info" style="display: none">未解决</small>
+                <small class="text-success">已解决</small>
+              </div>
+              <div class="col-6 text-right">
+                <small>10浏览</small>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="list-group list-group-flush">
+          <a href="question/detail.html" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <small class="mr-2">1条回答</small>
+                <small class="text-warning" style="display: none">未回复</small>
+                <small class="text-info" style="display: none">未解决</small>
+                <small class="text-success">已解决</small>
+              </div>
+              <div class="col-6 text-right">
+                <small>10浏览</small>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="list-group list-group-flush">
+          <a href="question/detail.html" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <small class="mr-2">1条回答</small>
+                <small class="text-warning" style="display: none">未回复</small>
+                <small class="text-info" style="display: none">未解决</small>
+                <small class="text-success">已解决</small>
+              </div>
+              <div class="col-6 text-right">
+                <small>10浏览</small>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="list-group list-group-flush">
+          <a href="question/detail.html" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <small class="mr-2">1条回答</small>
+                <small class="text-warning" style="display: none">未回复</small>
+                <small class="text-info" style="display: none">未解决</small>
+                <small class="text-success">已解决</small>
+              </div>
+              <div class="col-6 text-right">
+                <small>10浏览</small>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="list-group list-group-flush">
+          <a href="question/detail.html" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <small class="mr-2">1条回答</small>
+                <small class="text-warning" style="display: none">未回复</small>
+                <small class="text-info" style="display: none">未解决</small>
+                <small class="text-success">已解决</small>
+              </div>
+              <div class="col-6 text-right">
+                <small>10浏览</small>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="list-group list-group-flush">
+          <a href="question/detail.html" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <small class="mr-2">1条回答</small>
+                <small class="text-warning" style="display: none">未回复</small>
+                <small class="text-info" style="display: none">未解决</small>
+                <small class="text-success">已解决</small>
+              </div>
+              <div class="col-6 text-right">
+                <small>10浏览</small>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="list-group list-group-flush">
+          <a href="question/detail.html" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h6 class="mb-1 text-dark">equals和==的区别是啥？</h6>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <small class="mr-2">1条回答</small>
+                <small class="text-warning" style="display: none">未回复</small>
+                <small class="text-info" style="display: none">未解决</small>
+                <small class="text-success">已解决</small>
+              </div>
+              <div class="col-6 text-right">
+                <small>10浏览</small>
+              </div>
+            </div>
+          </a>
+        </div>
+
+      </div>
+    </div>
+    <!-- / class="col-4"-->
+  </div>
+</div>
+<!--底部-->
+<footer class="container-fluid  bg-light mt-1 py-3">
+  <p class="text-center font-weight-light">仅用于学习用途<br><a href="#" rel="nofollow"
+                                                                   target="_blank">返回顶部</a>
+  </p>
+</footer>
+</body>
+</html>

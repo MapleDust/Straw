@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.straw.api.mapper.QuestionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.tedu.straw.commons.model.Question">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="user_nick_name" property="userNickName"/>
+        <result column="user_id" property="userId"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="status" property="status"/>
+        <result column="hits" property="hits"/>
+        <result column="is_public" property="isPublic"/>
+        <result column="modified_time" property="modifiedTime"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="tag_ids" property="tagIds"/>
+    </resultMap>
+
+    <select id="findHotList" resultType="cn.tedu.straw.commons.vo.QuestionListItemVO">
+        select
+            id,title,status,hits
+        from
+            question
+        where
+            is_public = 1
+        order by
+            hits desc, id
+        limit
+            0,10
+    </select>
+
+    <resultMap id="QuestionVOResultMap" type="cn.tedu.straw.commons.vo.QuestionVO">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="user_nick_name" property="userNickName"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="status" property="status"/>
+        <result column="hits" property="hits"/>
+        <result column="tag_ids" property="tagIds"/>
+    </resultMap>
+
+    <select id="findMyQuestions" resultMap="QuestionVOResultMap">
+        select
+            id,title,content,status,tag_ids,user_nick_name,hits,created_time
+        from
+            question
+        where
+            user_id=#{userId}
+        order by
+            modified_time desc
+    </select>
+
+    <resultMap id="QuestionDetailVOResultMap" type="cn.tedu.straw.commons.vo.QuestionDetailVO">
+        <result column="user_nick_name" property="userNickName"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="tag_ids" property="tagIds"/>
+    </resultMap>
+
+    <select id="findById" resultMap="QuestionDetailVOResultMap">
+        select
+            id, title, content, status, tag_ids, user_nick_name, hits, created_time
+        from
+            question
+        where
+            id=#{id}
+    </select>
+</mapper>

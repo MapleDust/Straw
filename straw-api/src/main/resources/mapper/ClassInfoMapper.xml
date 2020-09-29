@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.straw.api.mapper.ClassInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.tedu.straw.commons.model.ClassInfo">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="invite_code" property="inviteCode"/>
+        <result column="enabled" property="enabled"/>
+        <result column="createdtime" property="createdtime"/>
+        <result column="modifiedtime" property="modifiedtime"/>
+    </resultMap>
+
+</mapper>

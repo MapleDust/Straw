@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/straw.iml" filepath="$PROJECT_DIR$/straw.iml" />
+      <module fileurl="file://$PROJECT_DIR$/straw-api/straw-api.iml" filepath="$PROJECT_DIR$/straw-api/straw-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/straw-commons/straw-commons.iml" filepath="$PROJECT_DIR$/straw-commons/straw-commons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/straw-eureka-server/straw-eureka-server.iml" filepath="$PROJECT_DIR$/straw-eureka-server/straw-eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/straw-gateway/straw-gateway.iml" filepath="$PROJECT_DIR$/straw-gateway/straw-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/straw-generator/straw-generator.iml" filepath="$PROJECT_DIR$/straw-generator/straw-generator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/straw-redis-tag/straw-redis-tag.iml" filepath="$PROJECT_DIR$/straw-redis-tag/straw-redis-tag.iml" />
+      <module fileurl="file://$PROJECT_DIR$/straw-resource/straw-resource.iml" filepath="$PROJECT_DIR$/straw-resource/straw-resource.iml" />
+      <module fileurl="file://$PROJECT_DIR$/straw-search/straw-search.iml" filepath="$PROJECT_DIR$/straw-search/straw-search.iml" />
+    </modules>
+  </component>
+</project>

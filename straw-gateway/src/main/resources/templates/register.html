@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>稻草FAQ注册</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="bower_components/plugins/css/vueAlert.css">
+  <link rel="stylesheet" href="css/login.css">
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="bower_components/vue/dist/vue.js"></script>
+</head>
+<body class="bg-light">
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="mx-auto mt-5" style="width: 400px">
+      <div class="alsrtInfo" style="display: none">
+        <div class="profPrompt_test"></div>
+      </div>
+      <h2 class="text-center">达内稻草问答系统</h2>
+      <div class="bg-white p-4" id="app">
+        <p class="text-center"><b>注册新用户</b></p>
+        <div id="error" class="alert alert-danger" style="display: none"
+             v-bind:class="{'d-block': hasError}">
+          <i class="fa fa-exclamation-triangle"></i>
+          <span v-text="errorMessage">邀请码错误！</span>
+        </div>
+        <form v-on:submit.prevent="register">
+          <div class="form-group has-icon">
+            <input type="text" name="inviteCode" class="form-control" placeholder="请输入邀请码"
+                   required="required" v-model="inviteCode">
+            <span class="fa fa-barcode form-control-icon"></span>
+          </div>
+          <div class="form-group has-icon">
+            <input type="tel" name="phone" class="form-control" placeholder="请输入手机号"
+                   pattern="^\d{11}$" required="required" v-model="phone">
+            <span class=" fa fa-phone form-control-icon"></span>
+          </div>
+          <div class="form-group has-icon">
+            <input type="text" name="nickname" class="form-control" placeholder="请设置昵称，字数为2-20之间"
+                   pattern="^.{2,20}$" required="required" v-model="nickname">
+            <span class="fa fa-user form-control-icon"></span>
+          </div>
+
+          <div class="form-group has-icon">
+            <input type="password" name="password" class="form-control" placeholder="设置密码6-20个字母、数字、下划线"
+                   required="required" pattern="^\w{6,20}$" v-model="password">
+            <span class="fa fa-lock form-control-icon"></span>
+          </div>
+          <div class="form-group has-icon">
+            <input type="password" name="confirm" class="form-control" placeholder="请再次输入密码"
+                   required="required" v-model="confirmPassword">
+            <span class="fa fa-lock form-control-icon"></span>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">注册</button>
+        </form>
+
+        <a href="login.html" class="text-center d-inline-block mt-3">已有账号，立即登录</a>
+      </div>
+      <!-- /.form-box -->
+    </div>
+  </div>
+</div>
+<script>
+    // 创建Vue对象，Vue()构造方法的参数是一个JSON对象
+    let app = new Vue({
+        // el属性：Vue对象对应页面中的哪个区域，取值时，使用#作为前缀表示根据id选择
+        el: '#app',
+        // data属性：定义Vue对象中的属性，值是JSON对象
+        data: {
+            // 定义了名为inviteCode的属性，需要在以上HTML代码中通过Vue语法绑定某个标签中的某属性值
+            inviteCode: null,
+            phone: null,
+            nickname: null,
+            password: null,
+            confirmPassword: null,
+            hasError: false,
+            errorMessage: '身份证号码错误'
+        },
+        // methods属性：定义Vue中的方法，值是JSON对象，可能是在页面中已经绑定的，也可能是内部调用的
+        methods: {
+            // 以下register是当前JSON对象的属性名，也是一个JavaScript的函数名称，将可以根据该名称来调用
+            register: function () {
+                // 清除（隐藏）原本可能存在的错误
+                app.hasError = false;
+                // 判断2次输入的密码是否相同
+                if (app.password != app.confirmPassword) {
+                    app.errorMessage = "两次输入的密码不一致！";
+                    app.hasError = true;
+                    return;
+                }
+                // alert("准备执行注册！！！");
+                // 使用JSON格式组织需要提交的数据
+                // 在JSON对象中，各属性名必须与服务器端接收请求参数所设定的名称保持一致
+                let data = {
+                    'inviteCode': app.inviteCode,
+                    'phone': app.phone,
+                    'nickname': app.nickname,
+                    'password': app.password
+                };
+                // 在控制台输出，检查以上值是否正确，在浏览器的控制台中可以查看数据
+                console.log('data >>> ' + data);
+                console.log(data);
+                // 提交ajax请求，并处理结果
+                $.ajax({
+                    url: '/api/v1/users/student/register',
+                    data: data,
+                    type: 'post',
+                    dataType: 'json',
+                    success: function (json) {
+                        // alert(json);
+                        if (json.state == 2000) {
+                            alert("注册成功！！！");
+                            // location.href = '目标路径';
+                        } else {
+                            // alert(json.message);
+                            app.errorMessage = json.message;
+                            app.hasError = true;
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>

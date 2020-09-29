@@ -1,0 +1,4 @@
+[v-cloak] {
+    /*防止标签闪烁*/
+    display: none;
+}

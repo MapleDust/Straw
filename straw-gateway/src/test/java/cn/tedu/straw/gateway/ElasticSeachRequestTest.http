@@ -1,0 +1,125 @@
+### 查看ElasticSearch服务器的运行状态
+GET http://localhost:9200
+
+### 创建索引，索引名为index01
+PUT http://localhost:9200/index01
+
+### 查看所有索引
+### _cat=category(类别)
+### indics=index的复数
+GET http://localhost:9200/_cat/indices?v
+
+### 删除索引,索引名为index01
+DELETE http://localhost:9200/index01
+
+### 查看index01索引详情
+GET http://localhost:9200/index01
+
+### 向index01索引中添加数据：
+PUT http://localhost:9200/index01/_create/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "ElasticSearch是干什么用的？",
+  "content": "它和MySQL数据库有什么区别？"
+}
+
+### 向index01索引中添加数据：
+PUT http://localhost:9200/index01/_create/1
+Content-Type: application/json
+
+{
+  "id": 2,
+  "title": "ElasticSearch是干什么用的？",
+  "content": "它和redis有什么区别？"
+}
+
+### 查询index01索引中的所有数据
+GET http://localhost:9200/index01/_search
+
+### 查看index01索引中1号的文档
+GET http://localhost:9200/index01/_doc/1
+
+### 删除index01索引中1号的文档
+DELETE http://localhost:9200/index01/_doc/1
+
+###更新index01索引中的1号文档
+POST http://localhost:9200/index01/_doc/1/_update
+Content-Type: application/json
+
+{
+  "doc": {
+    "title": "struts和SpringMVC有什么区别？",
+    "content": "为什么有些企业使用Struts,有些企业使用"
+  }
+}
+
+### 查询index01索引中包含“”关键字的数据
+GET http://localhost:9200/index01/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+            "title": "干什么"
+          }
+        },
+        {
+          "match": {
+            "content": "数据库"
+          }
+        }
+      ]
+    }
+  }
+}
+
+### 使用标准分词器解析文本
+POST http://localhost:9200/_analyze
+Content-Type:application/json
+
+{
+  "analyzer": "standard",
+  "text": "你一天天就只知道打游戏，能不能好好学点有用的东西。"
+}
+
+### 使用ik_smart分词器解析文本
+POST http://localhost:9200/_analyze
+Content-Type:application/json
+
+{
+  "analyzer": "ik_smart",
+  "text": "你一天天就只知道打游戏，能不能好好学点有用的东西。"
+}
+
+### 使用ik_smart分词器解析文本
+POST http://localhost:9200/_analyze
+Content-Type:application/json
+
+{
+  "analyzer": "ik_max_word",
+  "text": "你一天天就只知道打游戏，能不能好好学点有用的东西。"
+}
+
+### 配置索引的分词器
+POST http://localhost:9200/index01/_mapping
+Content-Type: application/json
+
+{
+  "properties": {
+    "title": {
+      "type": "text",
+      "analyzer": "ik_smart",
+      "search_analyzer": "ik_smart"
+    },
+    "content": {
+      "type": "text",
+      "analyzer": "ik_smart",
+      "search_analyzer": "ik_smart"
+    }
+  }
+}

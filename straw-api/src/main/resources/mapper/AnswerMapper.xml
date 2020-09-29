@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.straw.api.mapper.AnswerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.tedu.straw.commons.model.Answer">
+        <id column="id" property="id" />
+        <result column="content" property="content" />
+        <result column="count_of_likes" property="countOfLikes" />
+        <result column="user_id" property="userId" />
+        <result column="user_nick_name" property="userNickName" />
+        <result column="question_id" property="questionId" />
+        <result column="created_time" property="createdTime" />
+        <result column="status_of_accept" property="statusOfAccept" />
+    </resultMap>
+
+    <resultMap id="AnswerVOMap" type="cn.tedu.straw.commons.vo.AnswerVO">
+        <id column="answerId" property="id" />
+        <result column="answerContent" property="content" />
+        <result column="count_of_likes" property="countOfLikes" />
+        <result column="answerUserId" property="userId" />
+        <result column="answerUserNickName" property="userNickName" />
+        <result column="answerCreatedTime" property="createdTime" />
+        <result column="status_of_accept" property="statusOfAccept" />
+        <!-- collection节点：配置1对多的查询，例如1个“答案”对应多个“评论” -->
+        <!-- property属性：用哪个属性封装多条数据 -->
+        <!-- ofType属性：集合中的元素类型 -->
+        <collection property="comments"
+                    ofType="cn.tedu.straw.commons.model.Comment">
+            <id column="id" property="id" />
+            <result column="content" property="content" />
+            <result column="user_id" property="userId" />
+            <result column="user_nick_name" property="userNickName" />
+            <result column="created_time" property="createdTime" />
+        </collection>
+    </resultMap>
+
+    <select id="findByQuestionId" resultMap="AnswerVOMap">
+        SELECT
+            answer.id               AS answerId,
+            answer.content          AS answerContent,
+            answer.count_of_likes,
+            answer.user_id          AS answerUserId,
+            answer.user_nick_name   AS answerUserNickName,
+            answer.created_time     AS answerCreatedTime,
+            answer.status_of_accept,
+            comment.*
+        FROM
+            answer
+                LEFT JOIN
+            comment
+            ON
+                answer.id=comment.answer_id
+        WHERE
+            question_id=#{questionId}
+        ORDER BY
+            answer.status_of_accept DESC,
+            answer.created_time DESC,
+            comment.created_time DESC
+    </select>
+
+</mapper>
